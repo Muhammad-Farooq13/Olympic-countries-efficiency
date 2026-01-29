@@ -1,0 +1,30 @@
+# Docker Compose configuration for local development
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: olympic-efficiency-app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - MODEL_PATH=/app/models/best_model.pkl
+      - SCALER_PATH=/app/models/scaler.pkl
+      - FEATURE_NAMES_PATH=/app/models/feature_names.pkl
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  app_data:

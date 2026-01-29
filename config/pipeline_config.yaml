@@ -1,0 +1,33 @@
+# Default configuration for model training
+data:
+  raw_path: 'data/raw/olympic_countries_efficiency.csv'
+  processed_path: 'data/processed/processed_data.csv'
+  train_size: 0.8
+  test_size: 0.2
+  random_state: 42
+  target_column: 'total_medals'
+
+preprocessing:
+  handle_missing: true
+  strategy: 'median'
+  scale_features: true
+  outlier_method: 'iqr'  # 'iqr' or 'zscore'
+  outlier_threshold: 1.5
+
+model:
+  type: 'xgboost'  # Options: 'linear', 'ridge', 'lasso', 'rf', 'gb', 'xgboost'
+  random_state: 42
+  hyperparameters:
+    n_estimators: 100
+    max_depth: 5
+    learning_rate: 0.1
+
+training:
+  cross_val_folds: 5
+  hyperparameter_tuning: false
+  save_model: true
+  save_plots: true
+
+logging:
+  level: 'INFO'
+  log_file: 'logs/mlops_pipeline.log'
